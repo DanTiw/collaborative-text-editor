@@ -33,10 +33,10 @@ export default function TextEditor() {
         const handler = delta => {
             quill.updateContents(delta)
         }
-        socket.on("receive-changes", handler)
+        socket.on("receive", handler)
 
         return () => {
-            socket.off("receive-changes", handler)
+            socket.off("receive", handler)
         }
     }, [socket, quill])
     //U
@@ -45,7 +45,7 @@ export default function TextEditor() {
         if (socket == null || quill == null) return
         const handler = (delta, oldDelta, source) => {
             if (source !== "user") return
-            socket.emit("send-changes", delta)
+            socket.emit("send", delta)
         }
         quill.on("text-change", handler)
         return () => {
