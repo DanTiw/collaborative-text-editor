@@ -19,14 +19,14 @@ mongoose.connection.on('error', (err) => console.error('MongoDB connection error
 
 app.use(helmet());
 app.use(cors({
-    origin: "https://collaborative-text-editor-six.vercel.app/",
+    origin: "https://collaborative-text-editor-six.vercel.app",
     methods: ["GET", "POST"],
 }));
 
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
     cors: {
-        origin: "https://collaborative-text-editor-six.vercel.app/",
+        origin: "https://collaborative-text-editor-six.vercel.app",
         methods: ["GET", "POST"],
     },
 });
