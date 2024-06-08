@@ -19,7 +19,7 @@ export default function TextEditor() {
     const [socket, setSocket] = useState()
     const [quill, setQuill] = useState()
     const { id: documentId } = useParams()
-
+    const SAVE_INTERVAL_MS = 2000;
 
 
     //Set up socket
@@ -67,6 +67,20 @@ export default function TextEditor() {
             quill.off("text-change", handler)
         }
     })
+
+    //Saving data in Database
+    useEffect(() => {
+        if (socket == null || quill == null) return
+
+        const interval = setInterval(() => {
+            socket.emit("save-document", quill.getContents())
+        }, SAVE_INTERVAL_MS)
+
+        return () => {
+            clearInterval(interval)
+        }
+    }, [socket, quill])
+
     //Used callback to avoid infinite loop
 
     const wrapperRef = useCallback(wrapper => {
