@@ -27,6 +27,7 @@ const io = require("socket.io")(server, {
   cors: {
     origin: "https://collaborative-text-editor-six.vercel.app",
     methods: ["GET", "POST"],
+    credentials: true
   },
 });
 
