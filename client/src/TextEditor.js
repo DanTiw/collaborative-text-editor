@@ -24,7 +24,7 @@ export default function TextEditor() {
 
   //Set up socket
   useEffect(() => {
-    const s = io("https://collaborative-text-editor-backend.vercel.app")
+    const s = io("https://collaborative-text-editor-backend-3fbhclwbs.vercel.app")
     setSocket(s)
     return () => {
       s.disconnect()
