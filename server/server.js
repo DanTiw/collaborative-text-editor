@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require("mongoose");
 const Document = require("./document");
 const express = require('express');
-const helmet = require('helmet');
+
 const cors = require('cors');
 
 const app = express();
@@ -16,7 +16,7 @@ mongoose.connect(MONGO_URI, {
 
 mongoose.connection.on('connected', () => console.log('connected'));
 
-app.use(helmet());
+
 app.use(cors({
   origin: "https://collaborative-text-editor-six.vercel.app",
   methods: ["GET", "POST"],
