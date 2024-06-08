@@ -15,6 +15,7 @@ mongoose.connect(MONGO_URI, {
 
 mongoose.connection.on('connected', () => console.log('connected'));
 
+
 app.use(cors({
   origin: "https://collaborative-text-editor-six.vercel.app",
   methods: ["GET", "POST"],
@@ -25,7 +26,6 @@ const io = require("socket.io")(server, {
   cors: {
     origin: "https://collaborative-text-editor-six.vercel.app",
     methods: ["GET", "POST"],
-    credentials: true
   },
 });
 
@@ -44,6 +44,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("save-document", async (data) => {
+
       await Document.findByIdAndUpdate(documentId, { data });
     });
   });
