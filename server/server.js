@@ -18,14 +18,14 @@ mongoose.connection.on('connected', () => console.log('connected'));
 
 app.use(helmet());
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "https://collaborative-text-editor-six.vercel.app/",
   methods: ["GET", "POST"],
 }));
 
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://collaborative-text-editor-six.vercel.app/",
     methods: ["GET", "POST"],
   },
 });
