@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const Document = require("./document")
 
-mongoose.connect("mongodb+srv://myAtlasDBUser:MyAtlasDBUser@myatlasclusteredu.z4vwfx3.mongodb.net/", {
+mongoose.connect("MONGO_URI", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -10,7 +10,7 @@ mongoose.connect("mongodb+srv://myAtlasDBUser:MyAtlasDBUser@myatlasclusteredu.z4
 
 const io = require("socket.io")(3001, {
   cors: {
-    origin: "https://collaborative-text-editor-1.onrender.com",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 })
