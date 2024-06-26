@@ -1,66 +1,42 @@
+const mongoose = require("mongoose")
+const Document = require("./Document")
 
-const mongoose = require("mongoose");
-const Document = require("./document");
-const express = require('express');
-const cors = require('cors');
-
-const app = express();
-const MONGO_URI = process.env.MONGO_URI;
-const PORT = process.env.PORT || 3001;
-
-mongoose.connect(MONGO_URI, {
+mongoose.connect("mongodb+srv://myAtlasDBUser:MyAtlasDBUser@myatlasclusteredu.z4vwfx3.mongodb.net/", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+  useFindAndModify: false,
+  useCreateIndex: true,
+})
 
-mongoose.connection.on('connected', () => console.log('connected'));
-
-
-app.use(cors({
-  origin: "https://localhost:3000",
-  methods: ["GET", "POST"],
-}));
-
-const server = require("http").createServer(app);
-const io = require("socket.io")(server, {
+const io = require("socket.io")(3001, {
   cors: {
-    origin: "https://localhost:3000",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
-});
+})
 
-const defaultValue = "";
+const defaultValue = ""
 
-io.on("connection", (socket) => {
-  console.log('New client connected');
+io.on("connection", socket => {
+  socket.on("get-document", async documentId => {
+    const document = await findOrCreateDocument(documentId)
+    socket.join(documentId)
+    socket.emit("load-document", document.data)
 
-  socket.on("get-document", async (documentId) => {
-    const document = await findOrCreateDocument(documentId);
-    socket.join(documentId);
-    socket.emit("load-document", document.data);
+    socket.on("send-changes", delta => {
+      socket.broadcast.to(documentId).emit("receive-changes", delta)
+    })
 
-    socket.on("send", (delta) => {
-      socket.broadcast.to(documentId).emit("receive", delta);
-    });
-
-    socket.on("save-document", async (data) => {
-
-      await Document.findByIdAndUpdate(documentId, { data });
-    });
-  });
-
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-  });
-});
+    socket.on("save-document", async data => {
+      await Document.findByIdAndUpdate(documentId, { data })
+    })
+  })
+})
 
 async function findOrCreateDocument(id) {
-  if (id == null) return;
-  let document = await Document.findById(id);
-  if (document) return document;
-  return await Document.create({ _id: id, data: defaultValue });
-}
+  if (id == null) return
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  const document = await Document.findById(id)
+  if (document) return document
+  return await Document.create({ _id: id, data: defaultValue })
+}
