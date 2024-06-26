@@ -10,7 +10,7 @@ mongoose.connect("mongodb+srv://myAtlasDBUser:MyAtlasDBUser@myatlasclusteredu.z4
 
 const io = require("socket.io")(3001, {
   cors: {
-    origin: "https://collaborative-text-editor-lyart.vercel.app/",
+    origin: "https://collaborative-text-editor-1.onrender.com",
     methods: ["GET", "POST"],
   },
 })
