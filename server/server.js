@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const Document = require("./Document")
+const Document = require("./document")
 
 mongoose.connect("mongodb+srv://myAtlasDBUser:MyAtlasDBUser@myatlasclusteredu.z4vwfx3.mongodb.net/", {
   useNewUrlParser: true,
