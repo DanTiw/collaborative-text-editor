@@ -24,7 +24,7 @@ export default function TextEditor() {
 
   //Set up socket
   useEffect(() => {
-  const s =  io("https://collaborative-text-editor-m8km.onrender.com")
+  const s =  io("http://localhost:3001")
     setSocket(s)
     return () => {
       s.disconnect()
